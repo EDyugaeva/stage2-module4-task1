@@ -2,10 +2,9 @@ package com.mjc.stage2.impl;
 
 import com.mjc.stage2.ConnectionFactory;
 
-import java.io.IOException;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class H2ConnectionFactory implements ConnectionFactory {
@@ -14,12 +13,13 @@ public class H2ConnectionFactory implements ConnectionFactory {
     @Override
     public Connection createConnection() {
         try {
-            return DriverManager.getConnection("jdbc:h2:~/test", "sa", "");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            FileInputStream fis = new FileInputStream("h2database.properties");
+            Properties p = new Properties ();
+            p.load (fis);
+            return DriverManager.getConnection("jdbc:h2:~/test", p);
+        } catch (Exception e){
+            return null;
         }
-
     }
 
     // Write your code here!
